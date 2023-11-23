@@ -18,7 +18,10 @@
 package com.nageoffer.shortlink.project.dto.req;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -27,6 +30,9 @@ import java.util.Date;
  * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ShortLinkCreateReqDTO {
 
     /**
