@@ -80,7 +80,8 @@ const store = useStore()
 const defaultDomain = store.state.domain ?? ' '
 const props = defineProps({
   groupInfo: Array,
-  isSingle: Boolean // 单个创建传true， 批量创建传false
+  isSingle: Boolean, // 单个创建传true， 批量创建传false,
+  defaultGid: String
 })
 const { proxy } = getCurrentInstance()
 const API = proxy.$API
@@ -186,7 +187,22 @@ watch(
   () => props.groupInfo,
   (nV) => {
     groupInfo.value = nV
+    // console.log('默认的gid', props.defaultGid)
     formData.gid = nV[0].gid
+  },
+  {
+    immediate: true
+  }
+)
+watch(
+  () => props.defaultGid,
+  (nV) => {
+    console.log('数据发生变化了', props.defaultGid)
+    if (props.defaultGid) {
+      formData.gid = props.defaultGid
+    } else {
+      formData.gid = nV[0].gid
+    }
   },
   {
     immediate: true
