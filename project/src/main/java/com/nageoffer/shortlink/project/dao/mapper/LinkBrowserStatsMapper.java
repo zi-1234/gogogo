@@ -30,9 +30,11 @@ import java.util.List;
 
 /**
  * 浏览器统计访问持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 public interface LinkBrowserStatsMapper extends BaseMapper<LinkBrowserStatsDO> {
+
+    @Insert("<script>INSERT INTO t_link_browser_stats (full_short_url, date, cnt, browser, create_time, update_time, del_flag) VALUES <foreach collection='items' item='item' separator=','>(#{item.fullShortUrl}, #{item.date}, #{item.cnt}, #{item.browser}, NOW(), NOW(), 0)</foreach> ON DUPLICATE KEY UPDATE cnt = cnt + VALUES(cnt)</script>")
+    void batchShortLinkBrowserStats(@Param("items") List<LinkBrowserStatsDO> items);
 
     /**
      * 记录浏览器访问监控数据

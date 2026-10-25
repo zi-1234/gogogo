@@ -27,7 +27,6 @@ import java.util.List;
 
 /**
  * 封装 EasyExcel 操作 Web 工具方法
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 public class EasyExcelWebUtil {
 
@@ -41,10 +40,15 @@ public class EasyExcelWebUtil {
      */
     @SneakyThrows
     public static void write(HttpServletResponse response, String fileName, Class<?> clazz, List<?> data) {
+        //设置响应内容类型( Office Open XML 格式的 Excel 文件)
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        //设置字符编码
         response.setCharacterEncoding("utf-8");
+        //对文件名进行 URL 编码（支持中文等特殊字符）
         fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        //设置 Content-Disposition 响应头（触发文件下载）
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+        //使用 EasyExcel 写入数据到响应输出流
         EasyExcel.write(response.getOutputStream(), clazz).sheet("Sheet").doWrite(data);
     }
 }

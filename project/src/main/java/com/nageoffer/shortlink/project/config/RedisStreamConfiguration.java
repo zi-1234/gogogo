@@ -39,16 +39,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.nageoffer.shortlink.project.common.constant.RedisKeyConstant.SHORT_LINK_STATS_STREAM_GROUP_KEY;
 import static com.nageoffer.shortlink.project.common.constant.RedisKeyConstant.SHORT_LINK_STATS_STREAM_TOPIC_KEY;
 
-/**
- * Redis Stream 消息队列配置
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
- */
-@Configuration
-@RequiredArgsConstructor
+
+/*
+//@Configuration
+//@RequiredArgsConstructor
 public class RedisStreamConfiguration {
 
-    private final RedisConnectionFactory redisConnectionFactory;
-    private final ShortLinkStatsSaveConsumer shortLinkStatsSaveConsumer;
+    //private final RedisConnectionFactory redisConnectionFactory;
+    //private final ShortLinkStatsSaveConsumer shortLinkStatsSaveConsumer;
 
     @Bean
     public ExecutorService asyncStreamConsumer() {
@@ -92,3 +90,4 @@ public class RedisStreamConfiguration {
         return subscription;
     }
 }
+*/

@@ -45,7 +45,6 @@ import java.util.List;
 
 /**
  * 短链接控制层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 @RestController
 @RequiredArgsConstructor
@@ -72,14 +71,6 @@ public class ShortLinkController {
     )
     public Result<ShortLinkCreateRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
         return Results.success(shortLinkService.createShortLink(requestParam));
-    }
-
-    /**
-     * 通过分布式锁创建短链接
-     */
-    @PostMapping("/api/short-link/v1/create/by-lock")
-    public Result<ShortLinkCreateRespDTO> createShortLinkByLock(@RequestBody ShortLinkCreateReqDTO requestParam) {
-        return Results.success(shortLinkService.createShortLinkByLock(requestParam));
     }
 
     /**

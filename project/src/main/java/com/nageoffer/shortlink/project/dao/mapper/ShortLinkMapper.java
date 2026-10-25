@@ -24,9 +24,12 @@ import com.nageoffer.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import com.nageoffer.shortlink.project.dto.req.ShortLinkRecycleBinPageReqDTO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
+import com.nageoffer.shortlink.project.dto.biz.ShortLinkStatsBatchItem;
+
 /**
  * 短链接持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 public interface ShortLinkMapper extends BaseMapper<ShortLinkDO> {
 
@@ -38,6 +41,8 @@ public interface ShortLinkMapper extends BaseMapper<ShortLinkDO> {
                         @Param("totalPv") Integer totalPv,
                         @Param("totalUv") Integer totalUv,
                         @Param("totalUip") Integer totalUip);
+
+    void incrementStatsBatch(@Param("items") List<ShortLinkStatsBatchItem> items);
 
     /**
      * 分页统计短链接

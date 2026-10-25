@@ -25,6 +25,7 @@ import com.nageoffer.shortlink.project.dto.req.ShortLinkGroupStatsAccessRecordRe
 import com.nageoffer.shortlink.project.dto.req.ShortLinkGroupStatsReqDTO;
 import com.nageoffer.shortlink.project.dto.req.ShortLinkStatsReqDTO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.HashMap;
@@ -33,9 +34,11 @@ import java.util.Map;
 
 /**
  * 访问日志监控持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 public interface LinkAccessLogsMapper extends BaseMapper<LinkAccessLogsDO> {
+
+    @Insert("<script>INSERT INTO t_link_access_logs (full_short_url, user, browser, os, ip, network, device, locale, create_time, update_time, del_flag) VALUES <foreach collection='items' item='item' separator=','>(#{item.fullShortUrl}, #{item.user}, #{item.browser}, #{item.os}, #{item.ip}, #{item.network}, #{item.device}, #{item.locale}, NOW(), NOW(), 0)</foreach></script>")
+    void batchInsert(@Param("items") List<LinkAccessLogsDO> items);
 
     /**
      * 根据短链接获取指定日期内高频访问IP数据

@@ -29,6 +29,29 @@
           AND full_short_url = #{fullShortUrl}
     </update>
 
+    <update id="incrementStatsBatch">
+        UPDATE t_link
+        SET total_pv = total_pv + CASE
+        <foreach collection="items" item="item">
+            WHEN gid = #{item.gid} AND full_short_url = #{item.fullShortUrl} THEN #{item.pv}
+        </foreach>
+        ELSE 0 END,
+        total_uv = total_uv + CASE
+        <foreach collection="items" item="item">
+            WHEN gid = #{item.gid} AND full_short_url = #{item.fullShortUrl} THEN #{item.uv}
+        </foreach>
+        ELSE 0 END,
+        total_uip = total_uip + CASE
+        <foreach collection="items" item="item">
+            WHEN gid = #{item.gid} AND full_short_url = #{item.fullShortUrl} THEN #{item.uip}
+        </foreach>
+        ELSE 0 END
+        WHERE
+        <foreach collection="items" item="item" separator=" OR ">
+            (gid = #{item.gid} AND full_short_url = #{item.fullShortUrl})
+        </foreach>
+    </update>
+
     <!-- 分页查询短链接 -->
     <select id="pageLink" parameterType="com.nageoffer.shortlink.project.dto.req.ShortLinkPageReqDTO"
             resultType="com.nageoffer.shortlink.project.dao.entity.ShortLinkDO">

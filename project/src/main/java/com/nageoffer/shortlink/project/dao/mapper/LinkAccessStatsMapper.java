@@ -29,9 +29,11 @@ import java.util.List;
 
 /**
  * 短链接基础访问监控持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 public interface LinkAccessStatsMapper extends BaseMapper<LinkAccessStatsDO> {
+
+    @Insert("<script>INSERT INTO t_link_access_stats (full_short_url, date, pv, uv, uip, hour, weekday, create_time, update_time, del_flag) VALUES <foreach collection='items' item='item' separator=','>(#{item.fullShortUrl}, #{item.date}, #{item.pv}, #{item.uv}, #{item.uip}, #{item.hour}, #{item.weekday}, NOW(), NOW(), 0)</foreach> ON DUPLICATE KEY UPDATE pv = pv + VALUES(pv), uv = uv + VALUES(uv), uip = uip + VALUES(uip)</script>")
+    void batchShortLinkStats(@Param("items") List<LinkAccessStatsDO> items);
 
     /**
      * 记录基础访问监控数据

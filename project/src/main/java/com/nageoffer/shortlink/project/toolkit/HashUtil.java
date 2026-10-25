@@ -21,9 +21,10 @@ import cn.hutool.core.lang.hash.MurmurHash;
 
 /**
  * HASH 工具类
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 public class HashUtil {
+
+    private static final long MASK_35_BIT = (1L << 35) - 1; // 0b111...111 (35个1) = 34,359,738,367
 
     private static final char[] CHARS = new char[]{
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -43,8 +44,10 @@ public class HashUtil {
     }
 
     public static String hashToBase62(String str) {
-        int i = MurmurHash.hash32(str);
+        //int i = MurmurHash.hash32(str);
+        long i = MurmurHash.hash64(str);
         long num = i < 0 ? Integer.MAX_VALUE - (long) i : i;
-        return convertDecToBase62(num);
+
+        return convertDecToBase62(num & MASK_35_BIT);
     }
 }

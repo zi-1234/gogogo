@@ -29,9 +29,11 @@ import java.util.List;
 
 /**
  * 访问设备监控持久层
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 public interface LinkDeviceStatsMapper extends BaseMapper<LinkDeviceStatsDO> {
+
+    @Insert("<script>INSERT INTO t_link_device_stats (full_short_url, date, cnt, device, create_time, update_time, del_flag) VALUES <foreach collection='items' item='item' separator=','>(#{item.fullShortUrl}, #{item.date}, #{item.cnt}, #{item.device}, NOW(), NOW(), 0)</foreach> ON DUPLICATE KEY UPDATE cnt = cnt + VALUES(cnt)</script>")
+    void batchShortLinkDeviceStats(@Param("items") List<LinkDeviceStatsDO> items);
 
     /**
      * 记录访问设备监控数据

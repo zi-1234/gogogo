@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 消息队列幂等处理器
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 @Component
 @RequiredArgsConstructor
@@ -42,6 +41,12 @@ public class MessageQueueIdempotentHandler {
      * @param messageId 消息唯一标识
      * @return 消息是否消费过
      */
+    public boolean isMessageProcessed(String messageId) {
+        String key = IDEMPOTENT_KEY_PREFIX + messageId;
+        Boolean b = stringRedisTemplate.opsForValue().setIfAbsent(key, "0", 2, TimeUnit.MINUTES);
+        return Boolean.FALSE.equals(b);
+    }
+
     public boolean isMessageBeingConsumed(String messageId) {
         String key = IDEMPOTENT_KEY_PREFIX + messageId;
         return Boolean.FALSE.equals(stringRedisTemplate.opsForValue().setIfAbsent(key, "0", 2, TimeUnit.MINUTES));

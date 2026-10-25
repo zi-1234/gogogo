@@ -25,14 +25,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.nageoffer.shortlink.project.common.constant.ShortLinkConstant.DEFAULT_CACHE_VALID_TIME;
 
 /**
  * 短链接工具类
- * 公众号：马丁玩编程，回复：加群，添加马哥微信（备注：link）获取项目资料
  */
 public class LinkUtil {
+
+    /**
+     * 缓存随机偏移上限（5分钟）
+     */
+    private static final long MAX_JITTER_MS = 5 * 60 * 1000L;
+
 
     /**
      * 获取短链接缓存有效期时间
@@ -43,7 +49,17 @@ public class LinkUtil {
     public static long getLinkCacheValidTime(Date validDate) {
         return Optional.ofNullable(validDate)
                 .map(each -> DateUtil.between(new Date(), each, DateUnit.MS))
-                .orElse(DEFAULT_CACHE_VALID_TIME);
+                .orElse(generateExpireWithJitter(DEFAULT_CACHE_VALID_TIME));
+    }
+
+    /**
+     * 获取随机偏移时间
+     *
+     * @return 随机偏移时间
+     */
+    private static long generateExpireWithJitter(long baseExpireMs) {
+        long jitter = ThreadLocalRandom.current().nextLong(MAX_JITTER_MS);
+        return baseExpireMs + jitter;
     }
 
     /**

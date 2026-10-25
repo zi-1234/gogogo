@@ -19,3 +19,9 @@ spring:
             - Path=/api/short-link/**
           filters:
             - name: TokenValidate
+
+#        以下为短链接跳转逻辑
+        - id: short-link-project
+          uri: lb://short-link-project/**
+          predicates:
+            - name: ShortCode
