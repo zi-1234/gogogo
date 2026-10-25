@@ -1,5 +1,8 @@
 server:
   port: 8001
+#  native 表示使用内嵌容器（Tomcat）原生支持解析 X-Forwarded-* 头
+#   Spring Boot 服务默认不信任
+  forward-headers-strategy: native
 
 spring:
   application:
@@ -19,17 +22,20 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: common-nacos-dev.magestack.cn:8848
+
 
 short-link:
   domain:
-    default: nurl.ink:8001
+#    修改为网关域名
+    default: nurl.ink:8000
   stats:
     locale:
       amap-key: 824c511f0997586ea016f979fdb23087
   goto-domain:
     white-list:
-      enable: true
+#      enable: true
+      enable: false
       names: '拿个offer,知乎,掘金,博客园'
       details:
         - nageoffer.com
@@ -41,3 +47,17 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
+
+
+rocketmq:
+#  name-server: common-rocketmq-dev.magestack.cn:9876
+  name-server: http://127.0.0.1:9876
+  producer:
+    group: short-link_project-service_stats-save_pg_zzq
+    topic: short-link_project-service_topic_zzq
+    send-message-timeout: 2000
+    retry-times-when-send-failed: 1
+    retry-times-when-send-async-failed: 1
+  consumer:
+    group: short-link_project-service_stats-save_cg_zzq
+    consume-message-batch-max-size: 32
